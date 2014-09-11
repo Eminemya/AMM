@@ -1,0 +1,7 @@
+0. high speed camera: cine -> tiff (10-bit)
+
+1. T_data: tiff -> mat (small for test, big for better quality)
+
+2. T_s7: mat -> amplified avi
+
+3. T_phase: mat -> freq analysis
