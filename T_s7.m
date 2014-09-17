@@ -1,5 +1,7 @@
 param_init
-fns = {'0Hz_11019fps_0_dl.mat','3100Hz_11019fps_l_dl.mat','3640Hz_11019fps_l_dl.mat'};
+%fns = {'0Hz_11019fps_0_dl.mat','3100Hz_11019fps_l_dl.mat','3640Hz_11019fps_l_dl.mat'};
+%fns = {'3640Hz_11019fps_s_dl.mat'};
+fns = {'simu_60000_3000_10_100_600_1_n1.mat'};
 %fns=dir('data/*_dl.mat');fns = {fns.name};
 
 fr=5;
@@ -34,6 +36,7 @@ f0 = str2num(nn(find(nn=='_',1,'first')+1:find(nn=='f',1,'first')-1));
 f1 = str2num(nn(1:find(nn=='_',1,'first')-3));
 %if f1==0;tempF=0;else tempF=1;end
 if f1==0;f1=3640;end;
+
 
 for mid=mids
 for sr=srs
