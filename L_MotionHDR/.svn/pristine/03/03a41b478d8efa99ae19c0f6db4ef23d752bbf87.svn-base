@@ -1,0 +1,213 @@
+\documentclass{article}
+
+\usepackage{times,cite}
+\usepackage{epsfig}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{caption,subcaption}
+\usepackage{float}
+\usepackage{multirow,comment}
+\usepackage{pifont}
+\usepackage{soul,hyperref}
+\usepackage{enumerate}
+\usepackage{enumitem}
+\usepackage{color}
+\newcommand{\nc}{\textcolor{red}}
+
+% define \umu for upright mu (eg. to abbreviate micrometer)
+\DeclareFontFamily{U}{euc}{}% I chose euc because the chart is called Euler cursive
+\DeclareFontShape{U}{euc}{m}{n}{<-6>eurm5<6-8>eurm7<8->eurm10}{}%
+\DeclareSymbolFont{AMSc}{U}{euc}{m}{n} % I chose AMSc because AMSa and AMSb are defined in the amsfonts-package
+\DeclareMathSymbol{\umu}{\mathord}{AMSc}{"16}
+\DeclareMathOperator*{\argmin}{arg\,min}
+
+\newcommand\independent{\protect\mathpalette{\protect\independenT}{\perp}}
+\def\independenT#1#2{\mathrel{\rlap{$#1#2$}\mkern2mu{#1#2}}}
+
+\begin{document}
+% 2014.10.24
+%%%%%%%%% TITLE
+\title{Phase Motion under Multiple Constraints}
+\author{
+Donglai \and Neal \\
+}
+
+\maketitle
+\bibliographystyle{../../../Util/splncs}
+\bibliography{../ref}
+\section{Notation}
+\begin{tabular}{|l|l|}
+\hline
+2D Motion&$u=\left(\begin{array}{c}u^1\\u^2\end{array}\right)$\\
+\hline 
+Two frames& $I_1(x)$, $I_2=I_1(x+u)$\\
+\hline 
+Amplitude and phase& $(A,\phi)$\\
+\hline 
+Scale and rotation& $(s,\theta)$\\
+\hline 
+\end{tabular}
+\section{Phase Measurement}
+We here derive the Gaussian distribution of the noisy phase measurement at the scale $s_i$ and orientation $\theta_i$.
+\subsection{Noiseless Phase Measurement $\phi_0$}
+Given image $I$, we apply the steered $G_2^{\theta_i},H_2^{\theta_i}$ filter and get response
+\begin{align}
+f_g = G_2^{\theta_i} \ast I,\ \ \ \  
+f_h = H_2^{\theta_i} \ast I
+\end{align}
+The ground truth amplitude $A_0$ and the phase $\phi_0$ can be calculated as
+\begin{align}
+A_0 = \sqrt{f_g^2+f_h^2},\ \ \ \  
+\phi_0 = \arctan{\frac{f_h}{f_g}}
+\end{align}
+
+\subsection{Noisy Phase Measurement $\mathcal{P}(\phi)$}
+We assume the image is corrupted by Gaussian white noise $n=\mathcal{N}(0,\sigma_n^2)$ at each pixel $(x,y)$ 
+\begin{align}
+I_n(x,y) = I(x,y)+n\sim\mathcal{N}(I(x,y),\sigma_n^2),
+\end{align}
+and we get the distribution of the filter response $f_g,f_h$:
+\begin{align}
+\mathcal{P}(f_g,f_h)=  
+&=\mathcal{P}(G_2^{\theta_i}\ast I_n,H_2^{\theta_i}\ast I_n)\nonumber\\ 
+&=\mathcal{P}(G_2^{\theta_i}\ast n,H_2^{\theta_i}\ast n)\nonumber\\ 
+&\sim\mathcal{N}(\vec 0, \left( \begin{array}{cc} G_2^{\theta_i}G_2^{\theta_iT}\sigma_n^2&H_2^{\theta_i}G_2^{\theta_iT}\\G_2^{\theta_i}H_2^{\theta_iT}&H_2^{\theta_i}H_2^{\theta_iT}\sigma_n^2\end{array}\right))
+\end{align}
+From Hilbert transform, we know $G_2^{\theta_i}H_2^{\theta_iT}=0, G_2^{\theta_i}G_2^{\theta_iT}=H_2^{\theta_i}H_2^{\theta_iT}$. We let $\sigma_0^2=G_2^{\theta_i}G_2^{\theta_iT}$ and simplify Eq.\nc{(4)} as 
+\begin{align}
+\mathcal{P}(f_g,f_h) = \mathcal{N}(\vec 0,\sigma_0^2\sigma_n^2\cdot I)
+\end{align}
+Changing to polar coordinate, we get the distribution of amplitude and phase measurement $A,\phi$:
+\begin{align}
+\mathcal{P}(A,\phi)&= =\frac{1}{2\pi\sigma_n^2,\sigma_0^2}\exp\left[-\frac{A_0^2\sin^2(\phi-\phi_0)}{2\sigma_n^2\sigma_0^2}\right]\exp\left[-\frac{(A-A_0\cos(\phi-\phi_0))^2}{2\sigma_n^2\sigma_0^2}\right]A
+\end{align}
+We set $\beta=\frac{A_0}{\sigma_n^2\sigma_0^2}$ and integrate out the amplitude $A$:
+\begin{align}
+\mathcal{P}(\phi)&=\frac{1}{2\pi}\exp\left[-\frac{\beta^2}{2}\right]
++\frac{\beta\cos(\phi-\phi_0)}{\sqrt{8\pi}}
+(1+erf\left(\frac{\beta\cos(\phi-\phi_0)}{\sqrt{2}}\right))
+\exp\left[-\frac{\beta^2\sin^2(\phi-\phi_0)}{2}\right]
+\end{align}
+Since we care about small motions, where $\phi-\phi_0\rightarrow 0$, 
+we use the following Taylor expansion at $\phi_0$:
+\begin{align}
+\sin(\phi-\phi_0)&=(\phi-\phi_0)+o(\phi-\phi_0), \nonumber\\ 
+\cos(\phi-\phi_0)&=1+o(\phi-\phi_0)\nonumber,
+\end{align}
+and the approximated distribution for noisy phase measurement is a Gaussian distribution
+\begin{align}
+\mathcal{P}(\phi)&\approx\frac{1}{2\pi}\exp\left[-\frac{\beta^2}{2}\right]
++\frac{\beta}{\sqrt{8\pi}}
+(1+erf\left(\frac{\beta}{\sqrt{2}}\right))
+\exp\left[-\frac{\beta^2(\phi-\phi_0)^2}{2}\right]\nonumber\\
+&\sim \exp\left[-\frac{(\phi-\phi_0)^2}{2\frac{\sigma_n^4\sigma_0^4}{A_0^2}}\right]
+\end{align}
+\section{From Phase Measurement to Velocity Measurement}
+\subsection{One Phase Measurement}
+We have two methods:
+\begin{enumerate}
+\item Constant Wavelength: the projected velocity $u_{\theta_i}$ is related with the phase change by the wavelength $\lambda$ 
+\begin{align}
+u_{\theta_i}=\frac{\lambda}{2\pi}\phi_t\nonumber,
+\end{align}
+and it follows the Gaussian distribution,
+which constrains the original velocity $u$
+\begin{align}
+(\cos\theta_i,\sin_i)\left(\begin{array}{c}u^1\\u^2\end{array}\right) =u_{\theta_i}\sim\mathcal{N}(\mu_i,\sigma_i^2)
+\end{align}
+\item Instantaneous Wavelength:
+We adaptively estimate the center wavelength with the phase texture.
+Or we can apply the phase constancy assumption and obtain the equation for the motion in the projected direction $u_{\theta_i}$ (Lucas-Kanada):
+\begin{align}
+(\phi_x, \phi_y)\left(\begin{array}{c}u^1\\u^2\end{array}\right) = -\phi_t \nonumber
+\end{align}
+Since $\phi\sim\mathcal{N}$, $u$ follows the ratio of Gaussian distributions, which is the Cauchy distribution. 
+To simplify the model, we plug in $(\hat\phi_x,\hat\phi_y)$, the MAP estimation of $(\phi_x,\phi_y)$ 
+and 
+\begin{align}
+(\hat\phi_x, \hat\phi_y)\left(\begin{array}{c}u^1\\u^2\end{array}\right)
+=-\phi_t\sim\mathcal{N}(\mu_i,\sigma_i^2)
+\end{align}
+\end{enumerate}
+For both methods, we obtain a 1D Gaussian distribution for a linear combination of $(u^1,u^2)$
+\begin{align}
+c_i = (a_i,b_i)\left(\begin{array}{c}u^1\\u^2\end{array}\right)  \sim \mathcal{N}(\mu_i,\sigma_i^2)
+\end{align}
+
+\subsection{Multiple Phase Measurements}
+Assume the observations are independent,
+we can rewrite the log joint likelihood:
+\begin{align}
+\log L&\propto \sum_i \frac{(a_iu^1+b_iu^2-\mu_i)^2}{2\sigma_i^2}\nonumber\\
+&\propto \sum_i(\frac{a_i}{\sigma_i}u^1+\frac{b_i}{\sigma_i}u^2-\mu_i/\sigma_i)^2\nonumber\\
+&\propto
+\left( \begin{array}{c} u^1\\u^2 \end{array} \right)^T
+\left( \begin{array}{cc} \sum_i\frac{a_i^2}{\sigma_i^2}&\sum_i\frac{a_ib_i}{\sigma_i^2}\\\sum_i\frac{a_ib_i}{\sigma_i^2}&\sum_i\frac{b_i^2}{\sigma_i^2}\end{array} \right)
+\left( \begin{array}{c} u^1\\u^2 \end{array} \right)
+-2\left( \begin{array}{c} \sum_i\frac{a_i\mu_i}{\sigma_i^2}\\\sum_i\frac{b_i\mu_i}{\sigma_i^2} \end{array} \right)^T
+\left( \begin{array}{c} u^1\\u^2 \end{array} \right)\nonumber\\
+&\propto 
+\left( (\begin{array}{c} u^1\\u^2 \end{array})-B_2^{-1}C_2 \right)^T
+B_2
+\left( (\begin{array}{c} u^1\\u^2 \end{array})-B_2^{-1}C_2 \right)
+\end{align}
+where $B_2=\left( \begin{array}{cc} \sum_i\frac{a_i^2}{\sigma_i^2}&\sum_i\frac{a_ib_i}{\sigma_i^2}\\\sum_i\frac{a_ib_i}{\sigma_i^2}&\sum_i\frac{b_i^2}{\sigma_i^2}\end{array} \right), C_2=\left( \begin{array}{c} \sum_i\frac{a_i\mu_i}{\sigma_i^2}\\\sum_i\frac{b_i\mu_i}{\sigma_i^2} \end{array} \right)$.
+Thus we have
+\begin{align}
+\left( \begin{array}{c} u^1\\u^2 \end{array} \right)
+&\sim \mathcal{N}(B_2^{-1}C_2,B_2^{-1})\\
+&\sim \mathcal{N}(\frac{\left( \begin{array}{c} \sum_{i>j}\frac{(a_ib_j-a_jb_i)(b_i\mu_j-b_j\mu_i)}{\sigma_i^2\sigma_j^2}\\\sum_{i>j}\frac{(a_ib_j-a_jb_i)(a_i\mu_j-a_j\mu_i)}{\sigma_i^2\sigma_j^2} \end{array} \right)}{\sum_{i>j}\frac{(a_ib_j-a_jb_i)^2}{\sigma_i^2\sigma_j^2}},
+\frac{\left( \begin{array}{cc} \sum_i\frac{b_i^2}{\sigma_i^2}&-\sum_i\frac{a_ib_i}{\sigma_i^2}\\-\sum_i\frac{a_ib_i}{\sigma_i^2}&\sum_i\frac{a_i^2}{\sigma_i^2}\end{array} \right)}{\sum_{i>j}\frac{(a_ib_j-a_jb_i)^2}{\sigma_i^2\sigma_j^2}},
+)
+\end{align}
+
+\noindent\textbf{Connection to Bill's write-up}\\
+For each observation, we only obtain a 1D Gaussian distribution
+for a linear combination of the 2D velocity, 
+which can be written as a 2D Gaussian distribution whose 
+variance is $\infty$ along one direction (singular precision matrix).
+\begin{align}
+\frac{(a_iu^1+b_iu^2-\mu_i)^2}{2\sigma_i^2}
+&=
+\frac{(\left( \begin{array}{c} u^1\\u^2 \end{array} \right)^T
+\left( \begin{array}{c} a_i\\b_i \end{array} \right)-\mu_i)^2}{2\sigma_i^2}\nonumber\\
+&=
+\frac{
+\left( \begin{array}{c} u^1\\u^2 \end{array} \right)^T
+\left[
+\left( \begin{array}{c} a_i\\b_i\end{array} \right)^T
+\left( \begin{array}{c} a_i\\b_i\end{array} \right)
+\right]
+\left( \begin{array}{c} u^1\\u^2 \end{array} \right)
++C_1u^1+C_2u^2+C_3
+}{2\sigma_i^2}
+\end{align}
+To get an intuitive visualization as in Bill's write-up,
+where each observation puts a 2D Gaussian blob for the velocity,
+we can either truncate the variance in such direction to a large enough number $N$,
+or adding a small diagonal matrix to the precision matrix.
+\begin{align}
+\left( \begin{array}{c} a_i\\b_i\end{array} \right)^T
+\left( \begin{array}{c} a_i\\b_i\end{array} \right)
+&\rightarrow
+\left( \begin{array}{c} a_i\\b_i\end{array} \right)^T
+\left( \begin{array}{c} a_i\\b_i\end{array} \right)
++\nc{\frac{1}{N}
+\left( \begin{array}{c} -b_i\\a_i\end{array} \right)^T
+\left( \begin{array}{c} -b_i\\a_i\end{array} \right)
+}\nonumber\\
+&\rightarrow
+\left( \begin{array}{cc} a_i\\b_i\end{array} \right)^T
+\left( \begin{array}{c} a_i\\b_i\end{array} \right)
++\nc{\frac{1}{N}
+\left( \begin{array}{cc} 1&0\\0&1\end{array} \right)
+}\nonumber
+\end{align}
+When $N\rightarrow\infty$, it converges to the derivation above.
+
+\end{document}
+
+
+
+

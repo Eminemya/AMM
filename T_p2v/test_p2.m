@@ -1,0 +1,1 @@
+% make a table of 10.^[-2:0]

@@ -1,0 +1,111 @@
+\documentclass[letterpaper, 10pt]{article}
+\usepackage{amsmath, bbm}
+\usepackage{amssymb, amsthm}
+%\usepackage{mathptmx}
+%\usepackage[LY1]{fontenc}
+\usepackage{fancyhdr}
+\usepackage{graphicx}
+\usepackage{subfigure}
+\usepackage{verbatim}
+\usepackage{array}
+\usepackage{hyperref}
+\usepackage[squaren]{SIunits}
+\usepackage{color}
+
+\topmargin 0in
+\headheight 0.0pt
+
+\headsep 0. in
+%\bottommargin 1in
+\oddsidemargin 0.0 in
+\evensidemargin 0.0 in
+\textwidth 6.5 in
+\textheight 9 in
+
+\renewcommand{\headrulewidth}{0pt}
+\newcommand{\tmop}[1]{\operatorname{#1}}
+\newtheorem{lemma}{Lemma}
+\newtheorem{theorem}{Theorem}
+\newtheorem{definition}{Definition}
+\newtheorem{claim}{Claim}
+\newtheorem{proposition}{Proposition}
+
+
+\newcommand{\neal}[1]{\textcolor{red}{Neal: #1}}
+\newtheorem{corollary}{Corollary}
+\newtheorem{fact}{Fact}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%       EDIT THESE VARAIBLES       %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \newcommand\independent{\protect\mathpalette{\protect\independenT}{\perp}}
+    \def\independenT#1#2{\mathrel{\setbox0\hbox{$#1#2$}%
+    \copy0\kern-\wd0\mkern4mu\box0}} 
+    \numberwithin{equation}{section} 
+\author{Neal Wadhwa}
+\title{Phase Model for Motion Dynamic Range Compression}
+\date{March 6, 2014}
+\begin{document}
+\newcommand{\D}{\mathcal{D}}
+\newcommand{\pr}{\tmop{Pr}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\beq}{\begin{equation}}
+\newcommand{\eeq}{\end{equation}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Var}{\text{Var}}
+\noindent
+\maketitle
+\section{Introduction}
+Naively, we look for peaks in the Fourier transform of the phase signal to find signal. Bayesian statistics tells us when and why this is a good strategy and when it is not a good strategy. We follow Bretthorst's treatment of the subject and extend it in cases where it would be useful for us. Specifically, we look at the case of nonstationary noise and three dimensional (two space, one time) signals, which Bretthorst does not look at it. Our goal for now is to automtate the selection of narrowband signals that may be useful for automatic mode shape visualization. 
+
+\section{Single Sinusoid} 
+\beq d[n] = B_1 \cos(\omega n)+B_2\sin(\omega n) + e[n]/A_i\eeq
+
+
+\section{Single Sinusoid with Nonstationary Noise}
+Suppose that the signal is a narrowband sinusoid and there is known amplitude $A[n]$ that is inversely proportional to the standard deviation of the noise, so that the data is 
+\beq d[n] = B_1 \cos(\omega n)+B_2\sin(\omega n) + e[n]/A_i\eeq
+where $e[n]$ has variance $\sigma^2$. Then the likelihood function is 
+\beq \text{exp}\left(-\frac{1}{2\sigma^2}\sum_{n=-N}^N A[n]^2(d[n]-B_1 \cos(\omega n)+B_2\sin(\omega n))^2\right)\eeq
+We assume a uniform prior on $B_1$ and $B_2$ and seek to integrate these terms out. To do this, we make some assumptions on $A[n]$ as compared to $\omega$. Specifically, we assume that $A[n]^2$ does not have much spectral content near $2\omega$ (for example when $A[n]$ varies slowly) and that $\omega$ is large relative to the total number of samples. With these assumptions, w e have the following assumptions
+\begin{align} B_1^2\sum^N_{n=1}A[n]^2\cos(\omega n)^2  = B_1^2\sum^N_{n=1}\frac{1}{2}A[n]^2(\cos(2\omega)+1) \approx & \frac{\sum A[n]^2}{2} B_1^2 \\
+B_2^2\sum^N_{n=1}A[n]^2\sin(\omega n)^2 \approx & \frac{\sum A[n]^2}{2} B_2^2 \\
+B_1B_2\sum^N_{n=1}A[n]^2\cos(\omega n)\sin(\omega n)\approx & 0 \\
+\end{align}
+As a shorthand, let us denote $\overline{A[n]^2} = \frac{1}{N}\sum A[n]^2$. Then, the likelihood simplifies to 
+\beq \text{exp}\left(-\frac{(N)Q}{2\sigma^2}\right)\eeq
+where 
+\beq Q = \frac{1}{N}\sum A[n]^2d[n]^2 - 2\sum A[n]^2B_1d[n]\cos(\omega) -2\sum A[n]^2 B_2 d[n]\sin(\omega) + \frac{\overline{A[n]^2}}{2}\left(B_1^2+B_2^2\right)\eeq
+We will now integrate out the $B_1$ and $B_2$ terms assuming a uninformative, improper uniform prior, which gives us a log posterior
+\beq \frac{1}{\overline{A[n]^2}} \left|\sum A[n]^2 d[n]e^{i\omega n}\right|^2\eeq
+The data is weighted by the square of the amplitudes and the then its Fourier transform is taken. Note that we made the assumption that the amplitudes are slowly varying relative to the input signal. 
+
+\subsection{Exact Analysis}
+In the previous section, we made several approximations enumerated here:
+\begin{enumerate}
+\item[1.] $A[n]^2$ contains very little frequency content at $2\omega$. 
+
+\item[2.] $\omega$ is large relative to $N$, so that the sinusoid has several periods in the recorded data 
+
+\end{enumerate}
+We used these assumptions to simplify our calculations, but in practice they could easily not be true. We can use techniques from Brotthorst to analyze the likelihood function exactly and avoid making these assumptions. However, the solution will be more tedious, but hopefully informative. Specifically, we want a change of variables, so that we can get rid of the cross term in the expression
+\beq B_1^2\sum A[n]^2\cos(\omega n)^2 + 2B_1B_2\sum  A[n]^2\cos(\omega n)\sin(\omega n) + B_2^2\sum A[n]^2\sin(\omega n)^2\eeq
+This can equation can be written in matrix notation
+\beq \left(\begin{array}{cc} B_1  & B_2 \\\end{array}\right)\left(\begin{array}{cc} \sum A[n]^2\cos(\omega n)^2 &\sum  A[n]^2\cos(\omega n)\sin(\omega n)\\ 
+\sum  A[n]^2\cos(\omega n)\sin(\omega n) & \sum A[n]^2\sin(\omega n)^2\\ \end{array} \right)\left(\begin{array}{c} B_1\\ B_2\end{array}\right)\eeq
+The eigenvalues of the $2\times 2$ matrix in the previous equation are given by 
+\beq \frac{1}{2}\left(\sum A[n]^2 \pm \left|\sum A[n]^2 e^{i2\omega n} \right|\right)\eeq
+At this point, things become too tedius and we give up. 
+
+\subsection{Discussion}
+This means that we will only be able to say interesting things about frequencies that at least twice the frequency of the highest frequency in $A[n]^2$. So, the Fourier transform only makes sense for these high frequencies when we have this nonstationary noise and is not a good way to check if things are smooth. 
+
+
+
+
+
+
+\end{document}
