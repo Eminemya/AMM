@@ -3,5 +3,4 @@
 *.tif
 *.sw*
 *.chd
-L_Neal
-L_MotionHDR
+lib/
