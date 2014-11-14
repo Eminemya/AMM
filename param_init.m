@@ -1,3 +1,4 @@
+set(0,'DefaultFigureWindowStyle','docked')
 if ismac
 addpath(genpath('lib'))
 end

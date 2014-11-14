@@ -2,7 +2,7 @@ param_init
 DD = 'data/data_1111/';
 vids= dir([DD ]);vids(1:2)=[];vids=vids([vids.isdir]);
 
-num_im0 = @(x) min(60,numel(x));
+num_im0 = @(x) min(250,numel(x));
 %num_im0=@(x) numel(x);
 %num_dsp = 30;
 num_dsp = 0;
