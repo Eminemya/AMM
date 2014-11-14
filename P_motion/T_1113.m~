@@ -11,7 +11,7 @@ for fid=1:numel(fns)
     T_1113
 end
 % 07_21
-DD_f = '../0916/data/struct_0721/100Hz_1000fps_ex_400us_l.avi';fs=100;
+DD_f = '../0916/data/struct_0721/100Hz_1000fps_ex_990us_l.avi';fs=100;
 num_f = 200;f0=1000;ran={190:320,20:150};fid=1;fn='test 0721';
 num_f = 200;f0=1000;ran={190:220,120:150};fid=1;fn='test 0721';
 f0=1000;T_1113;

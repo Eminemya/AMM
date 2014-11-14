@@ -6,7 +6,7 @@ do_disp=0;
 fprintf('Pipeline for motion comparison \n');
 DD='data/data_1111/';
 
-aid = 4;
+aid = 1;
 sid = 's';
 %nn = sprintf('50Hz_500fps_a%d_%s',aid,sid);im_amp =1; % video frame files
 nn = sprintf('100Hz_500fps_a%d_%s',aid,sid);im_amp =1; % video frame files
