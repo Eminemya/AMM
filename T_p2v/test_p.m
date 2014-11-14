@@ -1,5 +1,5 @@
 %%
-fid =2;vid =2;
+fid =1;vid =2;
 vvs = 10.^(-[0:2]);
 mid = 2;
 vv = vvs(mid);
@@ -49,25 +49,41 @@ switch vid
         %plot((mod(pi+angle(signal2)-angle(signal),2*pi)-pi)./gradient(unwrap(angle(signal))))
     case 2
         fontsz = 15;
-        subplot(221),cla
+        subplot(231),cla
         set(gca,'FontSize',fontsz)
-        plot(x,real(signal1),'b-'); hold on;
-        plot(x,real(signal2),'r-')
+        plot(real(signal1),'b-'); hold on;
+        plot(real(signal2),'r-')
         xlabel('x')
         title('signal')
-        %{
+        
+        subplot(232),cla
+        set(gca,'FontSize',fontsz)
         plot(abs(signal1),'b-'); hold on;
         plot(abs(signal2),'r-')
         ylabel('amplitude')
         xlabel('x')
         title('signal amplitude')
         axis tight
-        %}
         
-        subplot(222),cla
+        subplot(236),cla
+        %ran =180:200;
+        ran =1:200;
+        %plot(abs(signal1(ran)),angle(signal1(ran)),'b-')
+        plot(angle(signal1(ran)),'b-')
+        bid = find(abs(gradient(tt))>1);
+        tt=angle(signal1(ran));
+        rr=abs(signal1(ran));        
+        
+        subplot(233),cla,hold on
+        plot(rr(bid).*cos(tt(bid)),rr(bid).*sin(tt(bid)),'bx'),axis tight
+        plot(real(signal1(ran)),imag(signal1(ran)),'r.'),axis tight
+        plot(0,0,'ko')
+        
+        
+        subplot(233),cla
         set(gca,'FontSize',fontsz)
-        plot(x,unwrap(angle(signal1)),'b-'); hold on;
-        plot(x,unwrap(angle(signal2)),'r-')
+        plot(unwrap(angle(signal1)),'b-'); hold on;
+        plot(unwrap(angle(signal2)),'r-')
         title('signal phase')
         ylabel('phase')
         xlabel('x')
@@ -78,7 +94,7 @@ switch vid
         phit = [reshape(phit,1,[]) 0];
         phix = [reshape(phix,1,[]) 0];
         
-        subplot(223),cla,hold on        
+        subplot(234),cla,hold on        
         set(gca,'FontSize',fontsz)
         plot(phix,phit,'b.')
         p2 = polyfit(phit,phix,1);
@@ -94,7 +110,7 @@ switch vid
         %}
         It = real(signal2)-real(signal1);
         Ix = gradient(real(signal1));
-        subplot(224),cla,hold on
+        subplot(235),cla,hold on
         set(gca,'FontSize',fontsz)
         plot(Ix,It,'b.')
         p=robustfit(Ix,It);
