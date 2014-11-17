@@ -1,0 +1,16 @@
+11.14 [Fri]
+        - [exp] DC light: SNR=8 @100Hz (SNR_DC = 1, SNR_natural=2) 
+        - [theo] perodic image formation [noise analysis(light+motion) ,uncertainty] [intensity/phase model]
+        - [exp_r] whitenoise, spectrum analysis [spatial cluster + denoise]
+        - [exp_r] compare dynamic DIC amp
+        - [paper] selling point: D-DIC [naive -> analysis]
+11.13 [Thur]
+        - [exp] test light signal [natural, DC, AC, LED]
+        - [exp_r] process video: 10-20% error [mm to pix ratio]
+        - [theo] phase switch sign [Chap3-4: magnitude vs amplitude]
+11.12 [Wed]
+        - [exp_r] light analysis: 20Hz motion + 120Hz light -> 100Hz noise
+11.11 [Tue]: 
+        - [exp] More point measurement
+11.10 [Mon]:
+        - [exp_r] 100Hz: wiener filter denoising, snr
