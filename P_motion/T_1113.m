@@ -10,13 +10,12 @@ for fid=1:numel(fns)
     DD_f = [DD fn];
     T_1113
 end
-% 07_21
-DD_f = '../0916/data/struct_0721/100Hz_1000fps_ex_400us_l.avi';fs=100;
-num_f = 200;f0=1000;ran={190:320,20:150};fid=1;fn='test 0721';
-num_f = 200;f0=1000;ran={190:220,120:150};fid=1;fn='test 0721';
+% 07_21 (right hand side)
+DD_f = '../0916/data/struct_0721/100Hz_1000fps_ex_990us_l.avi';fs=100;
+num_f = 200;f0=1000;ran={190:220,900:930};fid=1;fn='test 0721';
 f0=1000;T_1113;
 
-% 10_10
+% 10_10 (left hand side)
 DD_f = 'data/data_1010/100_500_s';fs=100;f0=500;
 num_f = 100;f0=500;ran={190:220,120:150};fid=1;fn='test 1010';
 T_1113;
@@ -44,6 +43,7 @@ if strcmp(DD_f(end-2:end),'avi')
     vid = squeeze(vid0.read([1,num_f]));
     vid = im2single(vid);
     sz = size(vid);
+    tmp_im = vid(:,:,1);
 else
     ims = dir([DD_f '/*.tif']);
     %num_f = numel(ims);
