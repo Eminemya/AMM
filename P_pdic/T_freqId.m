@@ -1,4 +1,4 @@
-function T_freqId(tmp_vr,fs)
+function [E,freq,amp]=T_freqId(tmp_vr,fs)
 if size(tmp_vr,3)==3
     tmp_vr = im2single(U_r2g(tmp_vr));
 end
@@ -12,6 +12,8 @@ amp =  abs(tmp_vr3(:,:,1:nq_f));
 [E,freq]= max(amp,[],3); 
 freq = freq/num_f*fs;
 
+%{
 figure(1),V_feat(cat(3,E,freq))
-figure(2),plot(mean(reshape(amp,[],nq_f),1))
+figure(2),plot((1:nq_f)/num_f*fs,mean(reshape(amp,[],nq_f),1))
 keyboard
+%}

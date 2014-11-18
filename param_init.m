@@ -11,6 +11,7 @@ if ~exist('done_init','var')
     addpath(genpath([DLIB 'Util']))
     addpath(genpath([DLIB 'Low/Flow/Deqing']));
     addpath('T_p2v')
+    addpath('ICIP2015')
     addpath('P_amp')
     addpath('P_motion')
     addpath('P_pdic')
