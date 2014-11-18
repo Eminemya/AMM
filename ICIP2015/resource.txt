@@ -1,0 +1,9 @@
+1. http://blog.hostilefork.com/perfect-reconstruction-equalizer/
+2. http://www.musicdsp.org/files/Audio-EQ-Cookbook.txt
+3. A java tutorial for programming biquad filters. http://arachnoid.com/BiQuadDesigner/index.html
+
+Books
+-------
+4. Understanding Digital Signal Processing is a good introduction to DSP. 
+5. Into5. uction To Digital Filters with Audio Applications by Julius O. Smith III 
+6. Graphic Equalizer Design Using Higher-Order Recursive Filters by Martin Holters and Udo Zolzer is a short paper detailing one EQ filter design approach.
