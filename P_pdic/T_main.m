@@ -19,7 +19,10 @@ for i=1:numel(fns)
         T_freqId(tmp_vr);
     end
     if do_step2
-        fid = 0;
+        fid = 1;
+        if fid==1
+            sz(end) = num_disp;
+        end
         f_pid =0;
         fprintf('2. local flow\n')
         flow_sn = [DD fns(i).name(1:end-4) '_f' num2str(fid) '.mat'];

@@ -1,3 +1,6 @@
+11.17 [Mon]
+        - [exp_r] motion: LK, HS (multi-scale) [too much noise]
+        - [exp_r] 11.14 result [error bound]
 11.14 [Fri]
         - [exp] DC light: SNR=8 @100Hz (SNR_DC = 1, SNR_natural=2) 
         - [theo] perodic image formation [noise analysis(light+motion) ,uncertainty] [intensity/phase model]
