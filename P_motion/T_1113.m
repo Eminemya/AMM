@@ -22,9 +22,20 @@ num_f = 100;f0=500;ran={190:220,120:150};fid=1;fn='test 1010';
 T_1113;
 
 % 11_11
-DD_f = 'data/data_1111/100Hz_500fps_a1_s';fs=100;f0=500;
+DD_f = 'data/data_1111/50Hz_500fps_a1_s';fs=100;f0=500;
+%DD_f = 'data/data_1111/0Hz_500fps';fs=100;f0=500;
 num_f = 600;ran={205:230,130:160};fid=1;fn='test 1111';
-num_f = 600;ran={55:80,130:160};fid=1;fn='test 1111';
+num_f = 2000;ran={55:80,130:160};fid=1;fn='test 1111';
+T_1113;
+
+% 11_14
+DD_f = 'data/data_1114/100Hz_500fps_a1_t';fs=100;f0=500;
+%DD_f = 'data/data_1114/0Hz_500fps';fs=100;f0=500;
+fid=1;fn='test 1111';
+num_f = 600;
+num_f = 2000;
+%ran={55:80,130:160};
+ran={205:230,130:160};
 T_1113;
 %}
 
