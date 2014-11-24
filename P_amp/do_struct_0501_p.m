@@ -40,6 +40,10 @@ case 4
     % remove low/high freq noise
     loCutoff = ceil(f0*0.1);
     hiCutoff = ceil(f0*0.4);
+case 5
+    % remove low/high freq noise
+    loCutoff = f1-2;
+    hiCutoff = f1+2;
 end
 if domask>0 
     disp('do mask')

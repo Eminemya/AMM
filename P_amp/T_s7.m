@@ -77,3 +77,17 @@ for aid=1:numel(avs)
 end
 %}
 
+%{
+for f1 =[80 12 225]
+DIR_DATA = 'data/neal/';
+tt= [1 300];
+f0 = 1500;
+fid=6;loCutoff = 78;hiCutoff= 227;
+nn='column.avi'
+PA=@phaseAmplify;
+pyrType='octave';filt_level = 0;mids=0;srs=1;
+alpha=5;
+do_struct_0501_p
+end
+%}
+
