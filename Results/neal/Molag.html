@@ -1,0 +1,13 @@
+<script>
+nn=['baby','baby_blanket','balance','camera','column','crane_crop','drum','guitar','metal_corner_brace','smoke','violin'];
+document.write("<table border=1>");
+document.write("<tr><td>name</td><td>MRF-flow</td><td>MRF-flow+BandPass (30 frames)</td><td>MRF-flow+BandPass (all frames)</td></tr>");
+for(var i=0;i<nn.length;i++){
+	document.write("<tr><td>"+nn[i]+"</td>");
+	document.write('<td><img height=200 src="mrf/'+nn[i]+'_lag1.gif"/></td>');
+	document.write('<td><img height=200 src="mrf/'+nn[i]+'_lag1_p1.gif"/></td>');
+	document.write('<td><img height=200 src="mrf/'+nn[i]+'_lag1_p1_s.gif"/></td>');
+	document.write("</tr>");
+}
+document.write("</table>");
+</script>
