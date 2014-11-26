@@ -2,17 +2,19 @@ param_init
 DD = 'data/neal/';
 fns= dir([DD '*.avi']);
 fss =[30 30 300 300 1500 24 1900 600 10000 200 5600];
-fls = [10,10,1,36,78,0.2,74,72,10,9,340];
-fhs = [14,14,8,62,82,0.4,78,92,20,15,370];
+fls = [0,0,1,36,78,0.2,74,72,0,9,340];
+fhs = [0,0,8,62,82,0.4,78,92,0,15,370];
 amps = [10,30,10,60,30,50,10,25,100,25,100];
 do_step1=0;
 do_step2=1; psz=5;
 do_step3=1;
-num_disp = 30;
-for i=1:numel(fns)
-    fprintf('0. read video\n')
+nF = inf;
+%nF=30;num_disp = 30;
+for i=6:numel(fns)
+    fprintf('0. read video %d:\n',i)
     vid = VideoReader([DD fns(i).name]);
-    tmp_vr = im2single(vid.read());
+    tmp_vr = im2single(vid.read([1 nF]));   
+    %num_disp = size(tmp_vr,4);
     sz = size(tmp_vr);
     if do_step1
         fprintf('1. find frequency\n')
@@ -23,14 +25,24 @@ for i=1:numel(fns)
         if fid==1
             sz(end) = num_disp;
         end
-        f_pid =0;
+        %f_pid =0;
+        f_pid =1;
+        if fhs(i) == 0
+            f_pid =0;
+        end
+
         fprintf('2. local flow\n')
-        flow_sn = [DD fns(i).name(1:end-4) '_f' num2str(fid) '.mat'];
+        flow_sn0 = [DD fns(i).name(1:end-4) '_f' num2str(fid) '.mat'];
+        flow_sn = flow_sn0;
         switch f_pid
             case 1
                 flow_sn =[flow_sn(1:end-4) '_p1.mat'];
         end
         if ~exist(flow_sn,'file')
+            if exist(flow_sn0,'file')
+                fprintf('load prev flow\n');
+                load(flow_sn0,'flow_l')
+            else
             flow_l = zeros([sz(1:2) 2 sz(end)-1],'single');
             tmp_vr_g = U_r2g(tmp_vr);
             im_ref = tmp_vr_g(:,:,1);
@@ -66,6 +78,7 @@ for i=1:numel(fns)
                         flow_l(:,:,:,j) = T_lk_p_ms2(im_ref, tmp_vr(:,:,:,j+1),opts);
                     end
             end
+        end
             switch f_pid
                 case 1
                     % band pass
@@ -87,7 +100,7 @@ for i=1:numel(fns)
         end
         
         if ~exist([flow_sn(1:end-3) 'gif'],'file')
-            sz2= size(flow_l);sz2(4) = num_disp;
+            sz2= size(flow_l);sz2(4) = num_disp-1;
             flow_l_v = zeros([sz2(1:2) 3 sz2(4)],'uint8');
             parfor j =1:sz2(4)
                 flow_l_v(:,:,:,j) = flowToColor(flow_l(:,:,:,j));
@@ -101,6 +114,11 @@ for i=1:numel(fns)
     if do_step3
         fprintf('3. motion amplification\n')
         amp_sn = [DD fns(i).name(1:end-4) '_lag' num2str(fid) '.mat'];
+
+        switch f_pid
+            case 1
+                amp_sn =[amp_sn(1:end-4) '_p1.mat'];
+            end
         if ~exist(amp_sn,'file')
             amp = amps(i);
             tmp_vr2 = uint8(255*tmp_vr);
@@ -120,3 +138,18 @@ for i=1:numel(fns)
         end
     end
 end
+%{
+for i=1:numel(fns)
+    f_pid =1;
+    if fhs(i) == 0
+        f_pid =0;
+    end
+    amp_sn = [DD fns(i).name(1:end-4) '_lag' num2str(fid) '.mat'];
+    switch f_pid
+    case 1
+        amp_sn =[amp_sn(1:end-4) '_p1.mat'];
+    end
+    load(amp_sn,'tmp_vr2')
+    U_ims2gif(tmp_vr2(:,:,:,1:num_disp),[amp_sn(1:end-4) '_s.gif'],0,1/24);
+end
+%%}
