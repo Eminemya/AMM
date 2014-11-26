@@ -6,7 +6,7 @@ do_step1=0;
 do_step2=1; psz=5;
 do_step3=1;
 num_disp = 30;
-for i=1
+for i=2:numel(fns)
     fprintf('0. read video\n')
     vid = VideoReader([DD fns(i).name]);
     tmp_vr = im2single(vid.read([1 2]));
@@ -24,7 +24,7 @@ for i=1
             tmp_vr_g = U_r2g(tmp_vr);
             im_ref = tmp_vr_g(:,:,1);
             j=fid+1;
-            switch fid
+            switc fid
                 case 0
                     flow_l(:,:,:,j) = T_lk_p3(im_ref, tmp_vr_g(:,:,2),psz);
                 case 1
@@ -76,7 +76,21 @@ for i=1
                     imagesc(amp2)
                     %}
             end
+            save(flow_sn,'flow_l')
+        else
+            load(flow_sn,'flow_l')
         end
         
-       V_feat(reshape(flow_l,sz(1),sz(2),[]),[],[],[-4 4]) 
+        if ~exist([flow_sn(1:end-3) 'gif'],'file')
+            sz2= size(flow_l);sz2(4) = num_disp;
+            flow_l_v = zeros([sz2(1:2) 3 sz2(4)],'uint8');
+            parfor j =1:sz2(4)
+                flow_l_v(:,:,:,j) = flowToColor(flow_l(:,:,:,j));
+            end
+            U_ims2gif(flow_l_v,[flow_sn(1:end-3) 'gif'],0,1/24);
+        end
+
+        end
+        
+      % V_feat(reshape(flow_l,sz(1),sz(2),[]),[],[],[-4 4]) 
 end

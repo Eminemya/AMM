@@ -11,8 +11,11 @@ fns = {'0Hz_500fps_dl.mat'};
 %fns = {'5500Hz_11119fps_dl.mat'};
 %fns = {'simu_60000_3000_10_100_600_1_n1.mat'};
 %fns=dir('data/*_dl.mat');fns = {fns.name};
-
+% 11.23: fabric
+DIR_DATA='/data/vision/billf/material/recFromSound/data/Canon6DOct25/';
+fns=dir([DIR_DATA '*.avi');fns = {fns.name};
 fr=10;
+
 for fff=1:numel(fns)
 nn=fns{fff};
 %aa=VideoReader(nn);a=aa.read(1);imagesc(a)
@@ -28,7 +31,7 @@ aas=[];
 %fids = [0 1 3 4]
 fids=1;
 %tempF = 0;
-tt=[1 250];
+tt=[1 300];
 %tt=[1 inf];
 
 % sinusoidal simulation
