@@ -317,13 +317,17 @@ for i=1:num_crop
                     tmp_f = cos(acc_angle)*tmp_fu +sin(acc_angle)*tmp_fv;
             end
     end
-    plot((ran{1}-ran{1}(1))/f0,motion_sc*tmp_f,'b-')
+    x2 = (ran{1}(filt_offset:end-filt_offset+1)-ran{1}(filt_offset))/f0;
+    s2 = motion_sc*tmp_f(filt_offset:end-filt_offset+1);
+    plot(x2,s2,'b-','LineWidth',2)
     
-    %motion_sc =23;plot((ran{1}-ran{1}(1))/f0,mean(reshape(bsxfun(@times,flow_l{i}(:,:,1,ran{1}),mask_crop{i}),[],numel(ran{1})),1)*motion_sc,'b-')
-    %motion_sc =5;plot((ran{1}-ran{1}(1))/f0,mean(reshape(flow_l{i}(:,:,1,ran{1}),[],numel(ran{1})),1)*motion_sc,'b-')
-    plot(flow_s{match(i)}(ran{2},1)-flow_s{match(i)}(ran{2}(1),1),flow_s{match(i)}(ran{2},2),'r-')
+    x1 = flow_s{flow_sid}(ran{2},1)-flow_s{flow_sid}(ran{2}(1),1);
+    s1 = flow_s{flow_sid}(ran{2},2);
+    plot(x1,-0+s1,'r-','LineWidth',2)
+    
     set(gca,'FontSize',20)
-    title(sprintf('sensor %d',i))
+    
+    title(sprintf('relative error %.2f%%',U_err(x1,s1,x2,s2)/max(s1(:))*100))
     xlabel('Time')
     ylabel('Acceleration')
     axis tight

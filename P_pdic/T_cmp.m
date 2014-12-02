@@ -6,7 +6,7 @@ do_step1=0;
 do_step2=1; psz=5;
 do_step3=1;
 num_disp = 30;
-for i=2:numel(fns)
+for i=1:numel(fns)
     fprintf('0. read video\n')
     vid = VideoReader([DD fns(i).name]);
     tmp_vr = im2single(vid.read([1 2]));

@@ -1,6 +1,11 @@
 function vid = U_highpass(vid,fcut,fs)
-
-[B,A] = butter(10, (fcut/(fs/2)),'high');
+sz= size(vid);
+if numel(sz)==3
+    pre_mean = mean(vid,3);
+else
+    pre_mean = mean(vid,4);
+end
+[B,A] = butter(5, (fcut/(fs/2)),'high');
 
 vid = im2double(vid);
 for k = 1:size(vid,4);
@@ -13,7 +18,12 @@ for k = 1:size(vid,4);
     vid(:,:,:,k) = ntsc2rgb(vid(:,:,:,k));
 end
 
+if numel(sz)==3
+    vid = bsxfun(@plus,bsxfun(@minus,vid,mean(vid,3)),pre_mean);
+else
+    vid = bsxfun(@plus,bsxfun(@minus,vid,mean(vid,4)),pre_mean);
 end
+
 
 
 %{
@@ -23,8 +33,7 @@ H = fspecial('Gaussian',2*psz_h+1,sigma);
 H = H/sum(H(:));
 low = convn(padarray(im,[psz_h psz_h],'replicate'),H,'valid');
 d= im - low;
-%}
-%{
+
 parfor i=1:sz(3)
     d(:,:,i) = imfilter(im(:,:,i),H);
 end

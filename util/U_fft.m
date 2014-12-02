@@ -1,6 +1,17 @@
-function out=U_fft(in,fs,do_plot)
+function out=U_fft(in,dimen,fs,do_plot)
 % each column is an observation
+N = ndims(in);
+ spice = 1:N;
+ spice(1) = dimen;
+ spice(dimen) = 1;
+ in = permute(in, spice);
+ in_sz = size(in);
+ in = reshape(in, [size(in,1),  numel(in)./size(in,1)]);
+ 
 out = abs(fft(bsxfun(@minus,in,mean(in,1))));
+ out = reshape(out, in_sz);
+ out = permute(out ,spice);
+
 if ~exist('do_plot','var')
     do_plot=0;
 end
