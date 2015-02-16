@@ -1,0 +1,33 @@
+1. selling points:
+	- speckless: sparse (edge) -> dense interpolation
+	- real time system
+	- analysis
+
+2. TODO:
+	- result
+	- ref for dynamic DIC
+
+
+
+
+A. Our video measurement is right:
+1. Test on simulation video (add noise)
+    - [done] lattice
+    - [todo] acoustic: need the simulation video
+2. Test on a video with driving force F:
+    - [done] compare the global shape with simulation result
+    - [todo] compare the motion of points with other measurement
+3. Test on videos with driving force [0, F/8, F/2]:
+    - [done] see how the signal becomes stronger and stronger in the power spectrum
+
+
+
+B. Our video measurement is better than Digital Image Correlation (DIC):
+1. Theory:
+    - feature to match/
+    - Gaussian/Cosine shape
+    - edge/texture/
+2. Simulation:
+    - when DIC performs 
+3. Experiment:
+run DIC on all the videos above and compare the results. I've done a few experiments and we are consistently better than DIC. I'm trying to get some theoretical proof for it.

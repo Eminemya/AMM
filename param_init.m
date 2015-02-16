@@ -1,12 +1,15 @@
 if ~exist('done_init','var')    
+    
     if isunix
-        addpath(genpath('../lib'))
+        LLIB = '../lib/';
+        
         DLIB= '/data/vision/billf/donglai-lib/VisionLib/Donglai/';
     end
     if ismac
-        addpath(genpath('lib'))
+        LLIB = 'lib/';
         DLIB= '/Users/Stephen/Code/VisionLib/Donglai/';
     end
+    addpath(genpath(LLIB))
     addpath('util')
     
     addpath(genpath([DLIB 'Low/Flow/CeOF/']))

@@ -1,7 +1,8 @@
 function out = U_g2rw(im,tmpmax,tmpmin)
-if ~exist('tmpmax','var');tmpmax=max(max(im,1),2);end
-if ~exist('tmpmin','var');tmpmin=min(min(im,1),2);end
+if ~exist('tmpmax','var');tmpmax=max(max(im,[],1),[],2);end
+if ~exist('tmpmin','var');tmpmin=min(min(im,[],1),[],2);end
 cc = colormap('jet');
+%cc = jet(255);
 sz = size(im);
 if numel(sz)==2;sz=[sz 1];end
 out = zeros([sz(1:2) 3 sz(3)]);
